@@ -42,7 +42,7 @@ Before you begin, ensure you have Docker and Docker Compose installed on your ma
 
 ## 📁 Shared Volumes
 
-The project uses shared volumes to connect the Rust binary from the `optimizer` service with the Node.js backend, allowing seamless integration without manual copying.
+The project uses shared volumes to connect the Rust binary from the `core` and `optimizer` service with the Node.js backend, allowing seamless integration without manual copying.
 
 ## 🐳 Docker Image Management
 
@@ -50,8 +50,8 @@ The services are based on the following Docker images, available under the `toba
 
 - **back**: Node.js application for API and business logic management.
 - **reader**: Module for document reading and display.
-- **core**: Central component for document management.
-- **optimizer**: Service for image compression and conversion in Rust.
+- **core**: Central component for document management. It extracts and splits the document into smaller parts and creates a JSON that allows the document to be reconstructed.
+- **optimizer**: Service for image compression and conversion in Rust. This service runs in the background to avoid disrupting the user experience. It compresses visuals and creates image files in the WebP format.
 
 ### Building
 

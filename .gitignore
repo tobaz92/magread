@@ -25,9 +25,10 @@ build/
 tmp/
 temp/
 out/
-documents
-mongo_data
-mongo_logs
+documents/
+mongo_data/
+mongo_logs/
+uploads/
 
 # Cache
 .cache/
