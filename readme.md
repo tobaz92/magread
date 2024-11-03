@@ -1,7 +1,7 @@
 
 [![mag-read](banner.svg)](https://mag-read.com/)
 
-This project is currently under construction. It allows for secure reading of PDFs by splitting each page into small, randomly sized parts. Additionally, it secures the display of these parts based on the domain where they are embedded.
+mag-read is currently under construction. It allows for secure reading of PDFs by splitting each page into small, randomly sized parts. Additionally, it secures the display of these parts based on the domain where they are embedded.
 ## 📋 Prerequisites
 
 Before you begin, ensure you have Docker and Docker Compose installed on your machine.
