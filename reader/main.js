@@ -4,7 +4,6 @@ import React from "react";
 import { createRoot } from "react-dom/client";
 import Player from "./components/player";
 import pako from "pako";
-import { haveWebpVersion } from "./components/utils";
 
 let started = false;
 
@@ -45,11 +44,6 @@ window.magReadInit = async () => {
 
     const data = decompressBase64Gzip(dataBase64);
     const thumbnails = decompressBase64Gzip(thumbnailBase64);
-
-    // window.MagreadConfig.havWebp = false;
-    // const haveWebp = haveWebpVersion(data, (bool) => {
-    //   window.MagreadConfig.havWebp = bool;
-    // });
 
     if (data.length < 1) {
       throw new Error("Erreur lors de la récupération du fichier JSON");

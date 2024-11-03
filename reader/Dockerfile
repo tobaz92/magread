@@ -11,6 +11,8 @@ WORKDIR /app
 
 # Copier et installer les dépendances Node.js
 COPY package.json ./
+
+# Installer les dépendances
 RUN npm install
 
 # Copier le reste du projet Node.js

@@ -7,7 +7,6 @@
   },
   "scripts": {
     "dev": "vite",
-    "build:dev": "rm -rf ../output/assets && vite build --mode production --emptyOutDir && node ./build.js",
     "build": "vite build --mode production --emptyOutDir"
   },
   "devDependencies": {
