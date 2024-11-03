@@ -1,11 +1,10 @@
-
 # MagRead
 
-MagRead is a document management application with features for file uploads, compression, and conversion, built with a microservices architecture in Docker. This project leverages Node.js, Express, and Rust to deliver a performant and modular solution.
+MagRead is a document management application with file upload, compression, and conversion features, built with a microservices architecture in Docker. This project uses Node.js, Express, and Rust to provide a performant and modular solution.
 
 ## 📋 Prerequisites
 
-Before you start, make sure you have Docker and Docker Compose installed on your machine.
+Before you begin, ensure you have Docker and Docker Compose installed on your machine.
 
 - [Docker](https://docs.docker.com/get-docker/)
 - [Docker Compose](https://docs.docker.com/compose/install/)
@@ -13,53 +12,59 @@ Before you start, make sure you have Docker and Docker Compose installed on your
 ## 🚀 Quick Start
 
 1. **Clone the repository:**
-    ```bash
-    git clone https://github.com/tobaz92/magread.git
-    cd magread
-    ```
+
+   ```bash
+   git clone https://github.com/tobaz92/mag-read.git
+   cd mag-read
+   ```
 
 2. **Start the services:**
-    Navigate to the Docker directory and use `docker-compose` to start all services in detached mode.
-    ```bash
-    cd docker
-    docker-compose up -d
-    ```
+   Navigate to the Docker directory and use `docker-compose` to start all services in detached mode.
+
+   ```bash
+   cd docker
+   docker-compose up -d
+   ```
 
 3. **Access the application:**
-    Open your browser and go to the following URL to access the application:
-    ```
-    http://localhost:3000/
-    ```
+   Open your browser and go to the following URL to access the application:
+   ```
+   http://localhost:3000/
+   ```
 
 ## 🛠 Project Structure
 
-- **/back**: Contains the backend Node.js application with Express, handling routes, authentication, and document management.
-- **/rust**: Rust project for image compression and conversion. Produces a binary that runs within the `optimizer` service.
-- **/docker**: Docker and Docker Compose files for orchestrating the various services.
+- **/back**: Contains the Node.js backend application with Express, handling routes, authentication, and document management.
+- **/rust**: Rust project for image compression and conversion. Produces a binary that runs in the `optimizer` service.
+- **/docker**: Docker and Docker Compose files to orchestrate the various services.
 - **/docker/build-local.sh**: Script for local Docker builds.
+- **/embedded**: Directory for embedded resources and assets used by the application.
 
 ## 📁 Shared Volumes
 
-The project uses shared volumes to connect the Rust binary from the `optimizer` service with the Node.js backend, enabling seamless integration without manual copies.
+The project uses shared volumes to connect the Rust binary from the `optimizer` service with the Node.js backend, allowing seamless integration without manual copying.
 
 ## 🐳 Docker Image Management
 
 The services are based on the following Docker images, available under the `tobaz92/magread` repository:
-- **[back](https://hub.docker.com/r/tobaz92/magread/tags?page=1&name=back-latest)**: Node.js application for managing the API and business logic.
-- **[reader](https://hub.docker.com/r/tobaz92/magread/tags?page=1&name=reader-latest)**: Module for reading and displaying documents.
-- **[core](https://hub.docker.com/r/tobaz92/magread/tags?page=1&name=core-latest)**: Central component for document management.
-- **[optimizer](https://hub.docker.com/r/tobaz92/magread/tags?page=1&name=optimizer-latest)**: Service for image compression and conversion in Rust.
+
+- **back**: Node.js application for API and business logic management.
+- **reader**: Module for document reading and display.
+- **core**: Central component for document management.
+- **optimizer**: Service for image compression and conversion in Rust.
 
 ### Building and Loading Images
 
-To build images locally, use the following script from the `docker` directory:
+To build the images locally, use the following script from the `docker` directory:
+
 ```bash
 ./build-local.sh
 ```
 
-## ⚙️ Development Setup
+## ⚙️ Development Configuration
 
 For continuous development, use `nodemon` to automatically reload the Node.js application:
+
 ```bash
 npm install -g nodemon
 nodemon
@@ -67,19 +72,33 @@ nodemon
 
 ## 📚 API Documentation
 
-Here’s an overview of the main routes available in the application:
+Here is an overview of the main routes available in the application:
 
-| Method | Route                          | Description                                  |
-|--------|--------------------------------|----------------------------------------------|
-| POST   | `/sign-up`                     | Register a new user                          |
-| POST   | `/login`                       | User login                                   |
-| GET    | `/me`                          | Get user profile information                 |
-| POST   | `/document/upload`             | Upload documents                             |
-| GET    | `/document/view/:token`        | View document by token                       |
-| DELETE | `/document/:token`             | Delete a document                            |
+| Method | Route                   | Description                  |
+| ------ | ----------------------- | ---------------------------- |
+| POST   | `/sign-up`              | Register a new user          |
+| POST   | `/login`                | User login                   |
+| GET    | `/me`                   | Get user profile information |
+| POST   | `/document/upload`      | Upload documents             |
+| GET    | `/document/view/:token` | View a document by token     |
+| DELETE | `/document/:token`      | Delete a document            |
+
+## 🔑 Token Generation and Domain Blocking
+
+The application generates tokens for secure document access. Tokens are used to view and manage documents without exposing direct URLs. Additionally, domain-based blocking is implemented to restrict access to specific domains, enhancing security and control over document distribution.
 
 ## 📦 Technologies Used
 
 - **Node.js & Express** for backend management
 - **Rust** for image optimization
 - **Docker** for containerization and service orchestration
+
+## 🔍 Contributing
+
+Contributions are welcome! To contribute:
+
+1. Fork the project.
+2. Create a branch for your feature (`git checkout -b feature/my-feature`).
+3. Commit your changes (`git commit -am 'Add my feature'`).
+4. Push the branch (`git push origin feature/my-feature`).
+5. Create a Pull Request.

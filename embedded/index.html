@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <body>
+    <div id="magread"></div>
+    <script>
+      window.addEventListener("load", async () => {
+        var magRead = new Magread("#magread", {
+          token: "", // Your token
+          fileId: "", // Your file id
+        });
+      });
+    </script>
+    <script type="module" src="/main.js"></script>
+  </body>
+</html>

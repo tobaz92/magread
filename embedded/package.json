@@ -1,0 +1,17 @@
+{
+  "name": "magread-embedded",
+  "private": true,
+  "version": "0.0.0",
+  "engine": {
+    "node": "=22.8.0"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^5.2.0",
+    "vite-plugin-babel": "^1.2.0"
+  }
+}
