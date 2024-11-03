@@ -1,0 +1,71 @@
+<% if (isLoggedIn) { %>
+<div class="documents">
+  <ul>
+    <% documents.forEach((document) => { %>
+    <li meta-document="<%= JSON.stringify(document) %>">
+      <a href="<%= document.url %>">
+        <img src="<%= document.thumbnailUri %>" alt="<%= document.title %>" />
+      </a>
+      <h2><%= document.title %></h2>
+      <p><%= document.description %></p>
+      <button id="delete"><%= __('Delete')%></button>
+      <button id="visibility">
+        <%= __('Visibility') %> <% if(document.public){ %><%=__('Public') %><% }
+        else { %><%= __('Hidden') %><% } %>
+      </button>
+    </li>
+    <% }); %>
+  </ul>
+</div>
+<script>
+  const deleteButtons = [
+    ...document.querySelectorAll(".documents button#delete"),
+  ];
+  if (deleteButtons.length > 0) {
+    deleteButtons.map((button) => {
+      button.addEventListener("click", async (e) => {
+        e.preventDefault();
+        const fileId = JSON.parse(
+          e.target.closest("li").getAttribute("meta-document")
+        )?.token;
+        const response = await fetch(`/document/${fileId}`, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        if (response.status === 200 || response.status === 201) {
+          window.location.href = "/";
+        }
+      });
+    });
+  }
+
+  const visibilityButtons = [
+    ...document.querySelectorAll(".documents button#visibility"),
+  ];
+
+  if (visibilityButtons.length > 0) {
+    visibilityButtons.map((button) => {
+      button.addEventListener("click", async (e) => {
+        e.preventDefault();
+        const documentData = JSON.parse(
+          e.target.parentElement.getAttribute("meta-document")
+        );
+        const newDocument = { ...documentData, public: !documentData.public };
+
+        const response = await fetch(`/document/${documentData.token}`, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(newDocument),
+        });
+        if (response.status === 200 || response.status === 201) {
+          window.location.href = "/";
+        }
+      });
+    });
+  }
+</script>
+<% } %>

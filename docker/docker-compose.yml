@@ -1,0 +1,67 @@
+services:
+  backend:
+    image: tobaz92/magread:back-latest
+    container_name: magread-backend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mongodb
+      - core
+      - optimizer
+      - reader
+    volumes:
+      - ./documents:/app/documents
+      - ./uploads:/app/uploads
+      - bin-core:/app/bin/core
+      - bin-optimizer:/app/bin/optimizer
+      - reader-dist:/app/src/public/v1
+    env_file:
+      - ./.env
+
+    networks:
+      - internal
+
+  core:
+    image: tobaz92/magread:core-latest
+    container_name: magread-core
+    volumes:
+      - bin-core:/usr/local/bin
+
+  optimizer:
+    image: tobaz92/magread:optimizer-latest
+    container_name: magread-optimizer
+    volumes:
+      - bin-optimizer:/usr/local/bin
+
+  reader:
+    image: tobaz92/magread:reader-latest
+    container_name: magread-reader
+    volumes:
+      - reader-dist:/app/dist
+
+  mongodb:
+    image: mongo:latest
+    container_name: magread-mongo
+    ports:
+      - "27017:27017"
+    command: >
+      mongod --dbpath /data/db --logappend 
+             --bind_ip 0.0.0.0 --port 27017
+    volumes:
+      - ./mongo_data:/data/db
+      - ./mongo_logs:/data/logs
+    networks:
+      - internal
+
+networks:
+  internal:
+    driver: bridge
+
+volumes:
+  mongo_data:
+  mongo_logs:
+  documents:
+  uploads:
+  reader-dist:
+  bin-optimizer:
+  bin-core:

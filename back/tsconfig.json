@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "commonjs", // commonjs
+    "jsx": "react", // ou "react-jsx" pour React 17+
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "baseUrl": ".",
+    "paths": {
+      "@types/*": ["src/type/*"]
+    }
+  },
+  "include": [
+    "src/**/*",
+    "src/type/**/*"
+  ]
+}

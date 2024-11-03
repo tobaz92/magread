@@ -1,0 +1,83 @@
+<form id="allowedDomainsForm" action="/settings" method="POST">
+  <h3><%= __('Allowed Domains') %></h3>
+  <label for="allowedDomains"><%= __('Add Domains') %>:</label>
+  <input
+    type="text"
+    id="allowedDomains"
+    name="allowedDomains[]"
+    placeholder="ex: example.com"
+  />
+  <button type="button" onclick="addDomainField()"><%= __('Add Domain') %></button>
+
+  <div id="additionalDomains">
+    <% if (settings?.allowedDomains) { for (const domain of
+    settings?.allowedDomains) { %>
+    <div class="domain">
+      <input type="text" name="allowedDomains[]" value="<%= domain %>" />
+      <button type="button" onclick="this.closest('.domain').remove()">
+        Remove
+      </button>
+    </div>
+    <% } } %>
+  </div>
+  <button type="submit"><%= __('Save all domains')%></button>
+</form>
+<script>
+  function addDomainField() {
+    const container = document.getElementById("additionalDomains");
+    const input = document.createElement("input");
+    input.type = "text";
+    input.name = "allowedDomains[]";
+    input.value = document.getElementById("allowedDomains").value;
+
+    const button = document.createElement("button");
+    button.type = "button";
+    button.textContent = "Remove";
+    button.onclick = (e) => e.target.closest(".domain").remove();
+
+    const div = document.createElement("div");
+    div.classList.add("domain");
+    div.appendChild(input);
+    div.appendChild(button);
+
+    container.appendChild(div);
+
+    document.getElementById("allowedDomains").value = "";
+  }
+</script>
+
+<script>
+  const submitAllowedDomainsForm = document.querySelector(
+    "#allowedDomainsForm [type='submit']"
+  );
+
+  submitAllowedDomainsForm.addEventListener("click", (e) => {
+    event.preventDefault();
+    const form = e.target.closest("form");
+    const formData = new FormData(form);
+
+    const data = { allowedDomains: [] };
+
+    for (const [key, value] of formData.entries()) {
+      if (value !== "") {
+        data.allowedDomains.push(value);
+      }
+    }
+
+    fetch(form.action, {
+      method: form.method,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Success:", data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  });
+</script>
+<!--  FIN -->

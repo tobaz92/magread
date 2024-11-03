@@ -1,0 +1,74 @@
+<%- include('../partials/header', { title: 'Login', isLoggedIn:false }) %>
+
+<h1><%= __('Create an account')%></h1>
+<p><%= __('Already have an account')%>? <a href="/login"><%= __('Log in')%></a></p>
+
+<form action="/users" method="post">
+  <label for="username"><%= __('Username')%>:</label>
+  <input
+    type="text"
+    id="username"
+    name="username"
+    value="test"
+    required
+    autocomplete="current-username"
+  />
+
+  <label for="email"><%= __('Email')%>:</label>
+  <input
+    type="email"
+    id="email"
+    name="email"
+    value="test@test.com"
+    required
+    autocomplete="current-email"
+  />
+
+  <label for="password"><%= __('Password')%>:</label>
+  <input
+    type="password"
+    id="password"
+    name="password"
+    value="password123"
+    required
+    autocomplete="current-password"
+  />
+
+  <input required type="checkbox" id="terms" name="terms" value="terms" />
+  <label for="terms"
+    ><%= __('I agree to the') %>
+    <a target="_blank" href="/page/terms"><%= __('Terms and Conditions')%></a></label
+  >
+
+  <button type="submit"><%= __('Create account')%></button>
+</form>
+
+<script>
+  const form = document.querySelector("form");
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const username = document.querySelector("#username").value;
+    const email = document.querySelector("#email").value;
+    const password = document.querySelector("#password").value;
+    const screenResolution = `${window.screen.width}x${window.screen.height}`;
+
+    const response = await fetch("/users", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ username, email, password, screenResolution }),
+    });
+
+    if (response.status === 200 || response.status === 201) {
+      window.location.href = "/";
+    } else {
+      const data = await response.json();
+      alert(data.message);
+    }
+  });
+</script>
+
+<%- include('../partials/footer') %>

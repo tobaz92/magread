@@ -1,0 +1,167 @@
+<%- include('../partials/header', { title: __('Upload'), isLoggedIn }) %>
+
+<style>
+  form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    height: 80dvh;
+  }
+
+  iframe {
+    max-width: 1280px;
+    width: 100%;
+    height: auto;
+    border: none;
+    margin-top: 30px;
+    box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
+  }
+  .footer {
+    background-color: #d2d2d2;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 20dvh;
+  }
+  .footer label {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background-color: #d2d2d2;
+    color: #000000;
+    width: 100%;
+    font-size: 0.7rem;
+  }
+  .footer textarea {
+    padding: 1rem;
+    border: none;
+    border-top: 1px solid #9a9a9a;
+    background-color: #d2d2d2;
+    color: #000000;
+    width: 100%;
+    height: calc(100% - 2rem);
+    margin: 0;
+  }
+</style>
+
+<form action="">
+  <div>
+    <input type="file" name="file" id="file" />
+    <input type="submit" value="<%= __('Upload')%>" />
+  </div>
+</form>
+<div class="footer">
+  <label for="logs">Log</label>
+  <textarea readonly rows="2" name="logs" id="logs"></textarea>
+</div>
+<script>
+  window.addEventListener("load", async () => {
+    const file = document.getElementById("file");
+    const progress = document.getElementById("progress");
+    const logs = document.getElementById("logs");
+    const uploadButton = document.querySelector("input[type=submit]");
+
+    file.addEventListener("change", (e) => {
+      const file = e.target.files[0];
+      logs.textContent = "";
+      document.body.querySelector("form a")?.remove();
+      uploadButton.disabled = !file;
+    });
+
+    let loaderInterval;
+    const loaderSymbols = ["|", "/", "-", "\\"];
+    let currentSymbolIndex = 0;
+
+    uploadButton.addEventListener("click", async (e) => {
+      e.target.disabled = true;
+      e.preventDefault();
+      const formData = new FormData();
+      formData.append("file", file.files[0]);
+
+      const xhr = new XMLHttpRequest();
+      xhr.open("POST", "/document/upload", true);
+
+      logs.textContent =
+        logs.textContent +
+        "📤 <%= __('Uploading Status')%>\n<%= __('Progress')%>: 0%";
+
+      scrollBottomTextarea();
+
+      xhr.upload.addEventListener("progress", (e) => {
+        if (e.lengthComputable) {
+          const percent = (e.loaded / e.total) * 100;
+
+          if (percent.toFixed(2).includes("100.00")) {
+            logs.textContent =
+              "📤 <%= __('Uploading Status')%>\n<%= __('Progress')%>: 100% ✅";
+
+            logs.textContent += "\n\n🔄 <%= __('Processing PDF')%>  ";
+            scrollBottomTextarea();
+            loaderInterval = setInterval(() => {
+              logs.textContent =
+                logs.textContent.slice(0, -1) +
+                loaderSymbols[currentSymbolIndex];
+              currentSymbolIndex =
+                (currentSymbolIndex + 1) % loaderSymbols.length;
+            }, 200);
+          } else {
+            logs.textContent = `📤 <%= __('Uploading Status')%>\n<%= __('Progress:')%> ${percent.toFixed(
+              2
+            )}%`;
+          }
+        }
+      });
+
+      xhr.onload = (e) => {
+        if (xhr.status === 200) {
+          const response = JSON.parse(xhr.responseText);
+
+          clearInterval(loaderInterval);
+          logs.textContent = logs.textContent.slice(0, -1);
+
+          const mins = Math.floor(response.elapsed / 60);
+          const secs = Math.floor(response.elapsed % 60);
+          const ms = (response.elapsed % 1) * 1000;
+
+          const elapsed = mins
+            ? `${mins} minutes ${secs}seconds`
+            : secs
+            ? `${secs} seconds ${ms.toFixed(0)} milliseconds`
+            : `${ms.toFixed(0)} milliseconds`;
+
+          logs.textContent =
+            logs.textContent +
+            "\n\n" +
+            "⏳ <%= __('File processing time')%>: " +
+            elapsed;
+          scrollBottomTextarea();
+
+          const hostUrl = window.location.origin;
+          const url = document.createElement("a");
+
+          url.href = hostUrl + response.url;
+          url.textContent = "👁️ <%= __('View Your PDF')%>";
+          url.target = "_blank";
+          url.style.display = "block";
+          url.style.marginTop = "10px";
+
+          logs.textContent += `\n\n👁️ <%= __('View your PDF')%>:\n${
+            hostUrl + response.url
+          }`;
+          scrollBottomTextarea();
+          document.body.querySelector("form").appendChild(url);
+        }
+      };
+
+      xhr.send(formData);
+    });
+  });
+
+  function scrollBottomTextarea() {
+    const textarea = document.getElementById("logs");
+    textarea.scrollTop = textarea.scrollHeight;
+  }
+</script>
+<%- include('../partials/footer') %>

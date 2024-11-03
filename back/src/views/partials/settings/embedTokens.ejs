@@ -1,0 +1,231 @@
+<form id="embedToken" action="/settings" method="POST">
+  <h3><%= __('Generate an Integration Token (Embed)') %></h3>
+
+  <label for="embedDomain"><%= __('Specific domain for the token') %>:</label>
+  <input
+    type="text"
+    id="embedDomain"
+    name="embedToken[domain]"
+    placeholder="ex: example.com"
+  />
+
+  <label for="embedFileId"><%= __('Specific file ID: ') %></label>
+  <input
+    type="text"
+    id="embedFileId"
+    name="embedToken[fileId]"
+    placeholder="ID du fichier"
+  />
+
+  <label for="embedExpiresAt"><%= __('Expiry date (optional)') %></label>
+  <input type="date" id="embedExpiresAt" name="embedToken[expiresAt]" />
+
+  <button type="button" onclick="addEmbedField()">
+    <%= __('Generate Token') %>
+  </button>
+
+  <div
+    id="additionalEmbedDomains"
+    meta-len="<%= settings?.embedTokens ? settings?.embedTokens.length : 0 %>"
+  >
+    <% let index=0; if (settings?.embedTokens) { for (const domain of
+    settings?.embedTokens) { %>
+    <div class="embedDomain">
+      <input
+        type="text"
+        name="embedToken[<%= index %>][tokenBase64]"
+        value="<%= domain.tokenBase64 %>"
+      />
+
+      <input
+        type="text"
+        name="embedToken[<%= index %>][token]"
+        value="<%= domain.token %>"
+      />
+
+      <input
+        type="text"
+        name="embedToken[<%= index %>][domain]"
+        value="<%= domain.domain %>"
+      />
+
+      <input
+        type="text"
+        name="embedToken[<%= index %>][expiresAt]"
+        value="<%= (() => {
+          const date = domain.expiresAt ? new Date(domain.expiresAt) : '';
+          if(!date) return '';
+          const day = date.getDate() < 10 ? `0${date.getDate()}` : date.getDate();
+          const month = date.getMonth() + 1 < 10 ? `0${date.getMonth() + 1}` : date.getMonth() + 1;
+          const year = date.getFullYear();
+          return `${year}-${month}-${day}`;
+        })() %>"
+      />
+      <input
+        type="text"
+        name="embedToken[<%= index %>][fileId]"
+        value="<%= domain.fileId %>"
+      />
+      <button type="button" onclick="this.closest('.embedDomain').remove()">
+        <%= __('Remove') %>
+      </button>
+    </div>
+
+    <% index++ } } %>
+  </div>
+
+  <button type="submit"><%= __('Save all tokens') %></button>
+</form>
+<script>
+  function addEmbedField() {
+    const container = document.getElementById("additionalEmbedDomains");
+    const domain = document.getElementById("embedDomain").value;
+    const fileId = document.getElementById("embedFileId").value;
+    const expiresAt = document.getElementById("embedExpiresAt").value;
+
+    if (!domain) {
+      alert("Please enter a domain");
+      return;
+    }
+
+    fetch("/settings/tokengenerator", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        embedToken: {
+          domain,
+          fileId,
+          expiresAt,
+        },
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Success:", data);
+
+        let index = parseInt(container.getAttribute("meta-len"));
+
+        const div = document.createElement("div");
+        div.classList.add("embedDomain");
+
+        const inputDomain = document.createElement("input");
+        inputDomain.type = "text";
+        inputDomain.name = `embedToken[${index}][domain]`; // Utiliser un index pour chaque groupe d'embedToken
+        inputDomain.value = data.domain;
+        inputDomain.readOnly = true;
+
+        const inputTokenBase64 = document.createElement("input");
+        inputTokenBase64.type = "text";
+        inputTokenBase64.name = `embedToken[${index}][tokenBase64]`; // Utiliser un index pour chaque groupe d'embedToken
+        inputTokenBase64.value = data.tokens.tokenBase64;
+        inputTokenBase64.readOnly = true;
+
+        const inputToken = document.createElement("input");
+        inputToken.type = "text";
+        inputToken.name = `embedToken[${index}][token]`; // Utiliser un index pour chaque groupe d'embedToken
+        inputToken.value = data.tokens.token;
+        inputToken.readOnly = true;
+        inputToken.hidden = true;
+
+        const inputExpiresAt = document.createElement("input");
+        inputExpiresAt.type = "text";
+        inputExpiresAt.name = `embedToken[${index}][expiresAt]`; // Utiliser un index pour chaque groupe d'embedToken
+        inputExpiresAt.value = data.expiresAt;
+        inputExpiresAt.readOnly = true;
+
+        const inputFileId = document.createElement("input");
+        inputFileId.type = "text";
+        inputFileId.name = `embedToken[${index}][fileId]`; // Utiliser un index pour chaque groupe d'embedToken
+        inputFileId.value = data.fileId;
+        inputFileId.readOnly = true;
+
+        const button = document.createElement("button");
+        button.type = "button";
+        button.textContent = "<%= __('Remove') %>";
+        button.onclick = () => div.remove();
+
+        div.appendChild(inputTokenBase64);
+        div.appendChild(inputToken);
+        div.appendChild(inputDomain);
+        div.appendChild(inputExpiresAt);
+        div.appendChild(inputFileId);
+        div.appendChild(button);
+
+        container.appendChild(div);
+
+        document.getElementById("embedDomain").value = "";
+        document.getElementById("embedFileId").value = "";
+        document.getElementById("embedExpiresAt").value = "";
+
+        index++;
+        container.setAttribute("meta-len", index);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }
+</script>
+
+<script>
+  const submitEmbedToken = document.querySelector(
+    "#embedToken [type='submit']"
+  );
+
+  submitEmbedToken.addEventListener("click", (e) => {
+    event.preventDefault();
+
+    const form = e.target.closest("form");
+    const formData = new FormData(form);
+
+    const data = { embedTokens: [] };
+
+    const tempData = new Map();
+
+    for (const [key, value] of formData.entries()) {
+      const keyWithoutBrackets = key.replace(/\[\d+\]/g, "").replace("[]", "");
+
+      if (key.startsWith("embedToken")) {
+        const match = key.match(/\[(\d+)\]/);
+        if (match) {
+          const index = parseInt(match[1]);
+          const subKey = key
+            .replace(/embedToken\[\d+\]/, "")
+            .replace("[", "")
+            .replace("]", "");
+
+          if (!tempData.has(index)) {
+            tempData.set(index, {});
+          }
+
+          tempData.get(index)[subKey] = value;
+        }
+      } else {
+        if (!data[keyWithoutBrackets]) {
+          data[keyWithoutBrackets] = [];
+        }
+        data[keyWithoutBrackets].push(value);
+      }
+    }
+
+    data.embedTokens = Array.from(tempData.values());
+
+    console.log(data);
+
+    fetch(form.action, {
+      method: form.method,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Success:", data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  });
+</script>

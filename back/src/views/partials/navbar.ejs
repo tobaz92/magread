@@ -1,0 +1,66 @@
+<nav>
+  <ul>
+    <li><a href="/"><%= __('Dashboard')%></a></li>
+    <% if (!isLoggedIn) { %>
+    <li><a href="/sign-up"><%= __('Sign up')%></a></li>
+    <% } else { %>
+    <li><a href="/settings"><%= __('Settings')%></a></li>
+    <li><a href="/me"><%= __('Profil')%></a></li>
+    <li><a href="/document"><%= __('Upload')%></a></li>
+    <li>
+      <a href="/logout" id="disconnect"><%= __('Disconnect')%></a>
+    </li>
+    <% } %>
+  </ul>
+  <ul id="language">
+    <li><a href="/lang/en"">EN</a></li>
+    <li>-</li>
+    <li><a href="/lang/fr"">FR</a></li>
+  </ul>
+</nav>
+<script>
+
+  const disconnectButton = document.querySelector("#disconnect");
+  if(disconnectButton){
+    disconnectButton.addEventListener("click", handleLogout);
+  }
+
+  async function handleLogout(e) {
+    e.preventDefault();
+    const response = await fetch("/auth/logout", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({}),
+    });
+    if (response.status === 200 || response.status === 201) {
+      window.location.href = "/";
+    }
+  }
+
+
+    const buttonsLanguage = [...document.querySelectorAll("#language a")];
+    buttonsLanguage.map((button)=>{
+      button.addEventListener("click", (e) => {
+        e.preventDefault();
+        const locale = e.target.href;
+        changeLanguage(locale);
+      })
+    })
+
+    async function changeLanguage(locale){
+      const response = await fetch(locale, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({}),
+      });
+      if (response.status === 200 || response.status === 201) {
+        window.location.reload();
+      }
+    }
+
+
+</script>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>MagRead</title>
+
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="./public/favicon/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="./public/favicon/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="./public/favicon/favicon-16x16.png"
+    />
+    <link
+      rel="mask-icon"
+      href="./public/favicon/safari-pinned-tab.svg"
+      color="#6c6c6c"
+    />
+    <meta name="msapplication-TileColor" content="#00aba9" />
+    <meta name="theme-color" content="#ffffff" />
+  </head>
+  <body>
+    <div id="magread"></div>
+    <script>
+
+      
+
+      window.MagreadConfig = {
+        files: "../public/data/", // DEV
+        // files: "./files/", // PROD
+        // files:
+        //   "http://localhost:3000/document/view/cohf6xgoqts-tpmp2i7mgco-20bat4avkg1-lf8je5xmxyo/files/", // TEST
+          url:"./public/",
+          server:"http://localhost:3000/"
+      };
+    </script>
+    <script type="module" src="/main.js"></script>
+  </body>
+</html>

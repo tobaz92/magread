@@ -1,0 +1,68 @@
+# Logs et rapports d'erreurs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Répertoires système
+.DS_Store
+Thumbs.db
+
+# Environnements
+.env
+.env.local
+.env.*.local
+
+# Dépendances Node.js
+node_modules/
+jspm_packages/
+
+# Builds
+dist/
+build/
+tmp/
+temp/
+out/
+documents
+mongo_data
+mongo_logs
+
+# Cache
+.cache/
+.npm/
+.eslintcache
+.parcel-cache/
+
+# Tests
+coverage/
+*.lcov
+
+# IDE/éditeurs
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Fichiers temporaires
+~$*
+
+# Rust
+**/target/
+**/output/
+**/Cargo.lock
+
+# Docker
+docker-compose.override.yml
+
+# Autres
+*.bak
+*.tmp
+data/*
+*.pdf
+package-lock.json
+documents/*

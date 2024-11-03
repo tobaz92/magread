@@ -1,0 +1,29 @@
+{
+  "name": "reader",
+  "private": true,
+  "version": "0.0.0",
+  "engine": {
+    "node": "=22.8.0"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build:dev": "rm -rf ../output/assets && vite build --mode production --emptyOutDir && node ./build.js",
+    "build": "vite build --mode production --emptyOutDir"
+  },
+  "devDependencies": {
+    "@babel/preset-react": "^7.24.7",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.47",
+    "postcss-aspect-ratio-polyfill": "^2.0.0",
+    "postcss-gap-properties": "^6.0.0",
+    "postcss-preset-env": "^10.0.5",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "sass-embedded": "^1.79.3",
+    "vite": "^5.2.0",
+    "vite-plugin-babel": "^1.2.0"
+  },
+  "dependencies": {
+    "pako": "^2.1.0"
+  }
+}

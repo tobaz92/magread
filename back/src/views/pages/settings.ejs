@@ -1,0 +1,14 @@
+<%- include('../partials/header', { title: 'Login', isLoggedIn }) %>
+
+<h1><%= title %></h1>
+
+<h2>
+  <a href="/settings"><%= __('Settings') %></a> |
+  <a href="/settings/allowedomains"><%= __('Allowed Domains') %></a> |
+  <a href="/settings/embedtoken"><%= __('Embed Token') %></a>
+  <!-- <a href="/settings/domainvisibility">Domain Visibility</a> -->
+</h2>
+
+<%- include('../partials/settings/allowedDomains.ejs') %> 
+<%- include('../partials/settings/embedtokens.ejs') %> 
+<%- include('../partials/footer') %>
