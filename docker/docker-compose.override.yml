@@ -1,0 +1,16 @@
+services:
+  backend:
+    volumes:
+      - ../back/src:/app/src       # Montage du code source pour le développement
+      - ../back/package.json:/app/package.json  # Package.json pour synchronisation
+    command: "npm run dev"        # Lancement avec nodemon pour rechargement auto
+    environment:
+      NODE_ENV: development        # Définir l’environnement comme développement
+
+  mongodb:
+    ports:
+      - "27017:27017"              # Exposer MongoDB pour accéder en local si besoin
+
+networks:
+  internal:
+    driver: bridge
