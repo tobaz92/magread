@@ -1,3 +1,4 @@
+
 # MagRead
 
 MagRead is a document management application with features for file uploads, compression, and conversion, built with a microservices architecture in Docker. This project leverages Node.js, Express, and Rust to deliver a performant and modular solution.
@@ -13,8 +14,8 @@ Before you start, make sure you have Docker and Docker Compose installed on your
 
 1. **Clone the repository:**
     ```bash
-    git clone https://github.com/tobaz92/mag-read.git
-    cd mag-read
+    git clone https://github.com/tobaz92/magread.git
+    cd magread
     ```
 
 2. **Start the services:**
@@ -44,10 +45,10 @@ The project uses shared volumes to connect the Rust binary from the `optimizer` 
 ## 🐳 Docker Image Management
 
 The services are based on the following Docker images, available under the `tobaz92/magread` repository:
-- **back**: Node.js application for managing the API and business logic.
-- **reader**: Module for reading and displaying documents.
-- **core**: Central component for document management.
-- **optimizer**: Service for image compression and conversion in Rust.
+- **[back](https://hub.docker.com/r/tobaz92/magread/tags?page=1&name=back-latest)**: Node.js application for managing the API and business logic.
+- **[reader](https://hub.docker.com/r/tobaz92/magread/tags?page=1&name=reader-latest)**: Module for reading and displaying documents.
+- **[core](https://hub.docker.com/r/tobaz92/magread/tags?page=1&name=core-latest)**: Central component for document management.
+- **[optimizer](https://hub.docker.com/r/tobaz92/magread/tags?page=1&name=optimizer-latest)**: Service for image compression and conversion in Rust.
 
 ### Building and Loading Images
 
