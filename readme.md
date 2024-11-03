@@ -53,7 +53,7 @@ The services are based on the following Docker images, available under the `toba
 - **core**: Central component for document management.
 - **optimizer**: Service for image compression and conversion in Rust.
 
-### Building and Loading Images
+### Building
 
 To build the images locally, use the following script from the `docker` directory:
 
