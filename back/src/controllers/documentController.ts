@@ -16,14 +16,12 @@ interface CustomRequest extends Request {
 }
 
 export const documentIndex = async (req: Request, res: Response) => {
-  const isLoggedIn = await haveSession(req);
+  const userId = req.session.userId ? req.session.userId : [];
+  const isLoggedIn = userId.length > 0 ? true : false;
   if (!isLoggedIn) {
     res.redirect("/login");
     return;
   }
-  const userId = req.session.userId ? req.session.userId : [];
-
-  const documents = await getDocuments(userId);
 
   res.render("pages/upload", { isLoggedIn, userId });
 };
@@ -80,7 +78,7 @@ export const uploadFile = (
 
   const runOpti = () => {
     const commandOpti = `./bin/optimizer/optimizer -f ${documentFolder} -webp`;
-    console.log('commandOpti', commandOpti);
+    console.log("commandOpti", commandOpti);
 
     exec(commandOpti, (error: any, stdout: any, stderr: any) => {
       if (error) {
