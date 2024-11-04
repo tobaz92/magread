@@ -8,6 +8,7 @@ Before you begin, ensure you have Docker and Docker Compose installed on your ma
 
 - [Docker](https://docs.docker.com/get-docker/)
 - [Docker Compose](https://docs.docker.com/compose/install/)
+- [Node.js](https://nodejs.org/) (required for development tasks like using `nodemon`)
 
 ## 🚀 Quick Start
 
