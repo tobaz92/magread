@@ -67,3 +67,6 @@ data/*
 *.pdf
 package-lock.json
 documents/*
+
+# Temporarily remove ci cd files
+.github/
