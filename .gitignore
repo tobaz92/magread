@@ -64,7 +64,7 @@ coverage/
 *.bak
 *.tmp
 data/*
-*.pdf
+# *.pdf
 package-lock.json
 documents/*
 
