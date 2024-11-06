@@ -12,8 +12,5 @@
       "@types/*": ["src/type/*"]
     }
   },
-  "include": [
-    "src/**/*",
-    "src/type/**/*"
-, "__tests__"  ]
+  "include": ["src/**/*", "src/type/**/*", "__tests__"]
 }
