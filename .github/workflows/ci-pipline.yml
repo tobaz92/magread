@@ -49,6 +49,10 @@ jobs:
         with:
           node-version: "22.9.0"
 
+      - name: Clean npm cache
+        run: npm cache clean --force
+        working-directory: ./back
+
       - name: Install dependencies
         run: npm install
         working-directory: ./back
@@ -68,6 +72,10 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "22.9.0"
+
+      - name: List installed dependencies
+        run: npm list
+        working-directory: ./back
 
       - name: Run tests
         env:
