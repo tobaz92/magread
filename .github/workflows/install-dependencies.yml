@@ -2,7 +2,7 @@ name: Install Dependencies
 
 on:
   workflow_run:
-    workflows: ["SetupDatabase"]
+    workflows: ["setup-db"]
     types:
       - completed
 
