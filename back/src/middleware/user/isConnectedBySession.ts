@@ -13,8 +13,11 @@ const isConnected = async (
     const isConnectedBySession = await haveSession(req);
 
     if (!isConnectedBySession) {
-      res.redirect("/login");
-      return;
+      // res.redirect("/login");
+      // return;
+      return res
+      .status(404)
+      .render("guest/404", { isLoggedIn: false });
     }
 
     const userId = req.session.userId;
