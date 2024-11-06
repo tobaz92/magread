@@ -60,6 +60,7 @@ jobs:
       - name: Verify Jest and ts-jest installation
         run: npx jest --version && npx ts-jest --version
         working-directory: ./back
+
   test:
     runs-on: ubuntu-latest
     needs: install-deps
@@ -73,13 +74,17 @@ jobs:
         with:
           node-version: "22.9.0"
 
+      - name: Install dependencies
+        run: npm install
+        working-directory: ./back
+
       - name: List installed dependencies
         run: npm list
         working-directory: ./back
 
       - name: Run tests
         env:
-          MONGO_URL: ${{ env.MONGO_URL }}
+          MONGO_URL: "mongodb://root:example@localhost:27017"
           DATABASE_NAME: "magread"
           SESSION_SECRET: "secret"
           TOKEN_SECRET: "secret"
