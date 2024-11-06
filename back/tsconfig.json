@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "es6",
     "module": "commonjs", // commonjs
     "jsx": "react", // ou "react-jsx" pour React 17+
     "strict": true,

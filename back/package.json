@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node src/server.js",
     "dev": "nodemon --exec ts-node src/server.ts",
-    "test": "npx jest --verbose",
+    "test": "npx jest",
     "build": "tsc"
   },
   "keywords": [],

@@ -50,9 +50,9 @@ jobs:
           node-version: "22.9.0"
 
       - name: Install dependencies
-        run: npm install --prefix ./back
-        # working-directory: ./back
-        
+        run: npm install
+        working-directory: ./back
+
       - name: Verify Jest and ts-jest installation
         run: npx jest --version && npx ts-jest --version
         working-directory: ./back
@@ -75,5 +75,5 @@ jobs:
           DATABASE_NAME: "magread"
           SESSION_SECRET: "secret"
           TOKEN_SECRET: "secret"
-        run: npm test
+        run: npm run test
         working-directory: ./back
