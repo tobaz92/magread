@@ -50,7 +50,7 @@ jobs:
           node-version: "22.9.0"
 
       - name: Install dependencies
-        run: npm install
+        run: npm install --prefix ./back
         working-directory: ./back
 
   test:
