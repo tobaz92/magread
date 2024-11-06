@@ -47,18 +47,27 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '22.9.0'
+          node-version: "22.9.0"
 
       - name: Install dependencies
+        run: npm install
 
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "22.9.0"
+
+      - name: Run tests
         env:
-            MONGO_URL: ${{ env.MONGO_URL }}
-            DATABASE_NAME: "magread"
-            SESSION_SECRET: "secret"
-            TOKEN_SECRET: "secret"
-
-        run: npm install && npm run test
-        
-
-
-        
+          MONGO_URL: ${{ env.MONGO_URL }}
+          DATABASE_NAME: "magread"
+          SESSION_SECRET: "secret"
+          TOKEN_SECRET: "secret"
+        run: npm test
