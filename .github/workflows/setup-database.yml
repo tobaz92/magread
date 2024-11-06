@@ -18,18 +18,20 @@ jobs:
         env:
           MONGO_INITDB_ROOT_USERNAME: root
           MONGO_INITDB_ROOT_PASSWORD: example
-        options: > 
-          --health-cmd "mongosh --eval 'db.runCommand({ ping: 1 })'" 
-          --health-interval 10s 
-          --health-timeout 5s 
-          --health-retries 5
 
     steps:
       - name: Wait for MongoDB to be ready
         run: |
-          until nc -z localhost 27017; do
+          for i in {1..10}; do
+            if nc -z localhost 27017; then
+              echo "MongoDB is ready!";
+              exit 0;
+            fi
             echo "Waiting for MongoDB...";
-            sleep 3;
+            sleep 5;
           done
+          echo "MongoDB did not become ready in time.";
+          exit 1
+
       - name: Save MongoDB configuration
         run: echo "MONGO_URL=mongodb://root:example@localhost:27017" >> $GITHUB_ENV
