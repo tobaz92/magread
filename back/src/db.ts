@@ -16,7 +16,9 @@ db.on("error", (error) => {
   throw new Error("An error occurred while connecting to the database: ");
 });
 db.once("open", () => {
-  console.log("Database connection successful");
+  if (process.env.NODE_ENV !== "test") {
+    console.log("Database connection successful");
+  }
 });
 
 export { db };

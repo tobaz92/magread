@@ -10,6 +10,8 @@ import {
   forgotPasswordIndex,
   forgotPassword,
   meIndex,
+  deleteUser,
+  forceLogoutUser,
 } from "../controllers/usersControllers";
 import isConnected from "../middleware/user/isConnectedBySession";
 import documentSettingsData from "../middleware/setting/settingsMiddleware";
@@ -29,5 +31,10 @@ userRouter.post("/auth/login", loginUser);
 userRouter.post("/auth/logout", logoutUser);
 
 userRouter.post("/auth/forgot-password", forgotPassword);
+
+if (process.env.NODE_ENV === "test") {
+  userRouter.delete("/users/:id", deleteUser);
+  userRouter.delete("/auth/logout/:id", forceLogoutUser);
+}
 
 export default userRouter;
