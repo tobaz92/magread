@@ -8,7 +8,7 @@ const logger = require("./utils/logger");
 const expressWinston = require("express-winston");
 
 import { router } from "./routes";
-import sessionMiddleware from "./middleware/user/sessionMiddleware";
+import {sessionMiddleware} from "./middleware/user/sessionMiddleware";
 import { errorMiddleware } from "./middleware/errorMiddleware";
 import cookieParser from "cookie-parser";
 import compression from "compression";
@@ -69,4 +69,9 @@ app.use((req: Request, res: Response, next: NextFunction) => {
     .render("guest/404", { isLoggedIn: req.session.userId });
 });
 
+
+
+
+
 export { app };
+

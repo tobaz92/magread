@@ -11,13 +11,10 @@ const isConnected = async (
 ): Promise<void> => {
   try {
     const isConnectedBySession = await haveSession(req);
-
     if (!isConnectedBySession) {
       // res.redirect("/login");
       // return;
-      return res
-      .status(404)
-      .render("guest/404", { isLoggedIn: false });
+      return res.status(404).render("guest/404", { isLoggedIn: false });
     }
 
     const userId = req.session.userId;
@@ -49,10 +46,13 @@ export const isConnectedBool = async (
     const isConnectedBySession = await haveSession(req);
     if (!isConnectedBySession) {
       req.user = null;
+      next();
+      return;
     }
 
     const userId = req.session.userId;
     const foundUser = await UserModel.findById(userId);
+
     if (!foundUser) {
       req.user = null;
     }
