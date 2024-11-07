@@ -99,5 +99,5 @@ jobs:
 
       - name: Build Docker Image
         working-directory: ./back
-        run: docker build -t tobaz92/magread:back-latest .
+        run: docker build -t tobaz92/magread:back-latest --push . 
 
