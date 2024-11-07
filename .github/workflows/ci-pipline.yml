@@ -99,16 +99,16 @@ jobs:
 
       - name: Build Docker Image — Back
         working-directory: ./back
-        run: docker buildx build --platform linux/amd64,linux/arm64 -t tobaz92/magread:back-latest --push .
+        run: docker build -t tobaz92/magread:back-latest --push .
 
       - name: Build Docker Image — Reader
         working-directory: ./reader
-        run: docker buildx build --platform linux/amd64,linux/arm64 -t tobaz92/magread:reader-latest --push .
+        run: docker build -t tobaz92/magread:reader-latest --push .
 
       - name: Build Docker Image — Core
         working-directory: ./core
-        run: docker buildx build --platform linux/amd64,linux/arm64 -t tobaz92/magread:core-latest --push .
+        run: docker build -t tobaz92/magread:core-latest --push .
 
       - name: Build Docker Image — Optimizer
         working-directory: ./optimizer
-        run: docker buildx build --platform linux/amd64,linux/arm64 -t tobaz92/magread:optimizer-latest --push .
+        run: docker build -t tobaz92/magread:optimizer-latest --push .
