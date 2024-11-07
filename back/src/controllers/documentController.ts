@@ -19,7 +19,7 @@ export const documentIndex = async (req: Request, res: Response) => {
   const userId = req.session.userId ? req.session.userId : [];
   const isLoggedIn = userId.length > 0 ? true : false;
   if (!isLoggedIn) {
-    res.redirect("/login");
+    res.status(404).render("guest/404", { isLoggedIn: false });
     return;
   }
 

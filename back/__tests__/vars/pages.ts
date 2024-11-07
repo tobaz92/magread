@@ -1,10 +1,8 @@
 const pagesRoutes = {
   guest: ["/", "/page/terms", "/page/privacy"],
   editor: [
-    "/documents",
-    "/profile",
+    "/document",
     "/settings",
-    "/upload",
     "/me"
   ],
   login:[

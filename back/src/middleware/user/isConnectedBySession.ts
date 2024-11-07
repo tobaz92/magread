@@ -12,8 +12,6 @@ const isConnected = async (
   try {
     const isConnectedBySession = await haveSession(req);
     if (!isConnectedBySession) {
-      // res.redirect("/login");
-      // return;
       return res.status(404).render("guest/404", { isLoggedIn: false });
     }
 
