@@ -5,6 +5,7 @@ import {
   generateToken,
   getAssetsEmbedUrl,
 } from "../utils/globalUtils";
+import { db } from "../db";
 interface AuthenticatedRequest extends Request {
   id?: string;
   userId?: string;
@@ -91,4 +92,40 @@ export const connect: RequestHandler = async (
   };
 
   res.status(200).send(result);
+};
+
+export const deleteSettings: RequestHandler = async (
+  req: AuthenticatedRequest,
+  res
+) => {
+  const id = req.params;
+  const settings = await db.collection("settings").find().toArray();
+
+
+
+  const settingsByUser = settings.filter((setting: any) => {
+    return setting.userId === id.id;
+  });
+
+
+
+  if (settingsByUser.length === 0) {
+    res
+      .status(404)
+      .json({ message: "Document settings not found " });
+    return;
+  }
+
+  settingsByUser.forEach(async (setting: any) => {
+    await db.collection("settings").deleteOne({ _id: setting._id });
+  });
+  res.status(200).json({ message: "Document settings deleted" });
+
+  // try {
+  //   await SettingsModel.findOneAndDelete({ userId });
+  // } catch (error: any) {
+  //   res.status(500).json({ message: error.message || "Internal server error" });
+  //   return;
+  // }
+  // res.status(200).send({ message: "Document settings deleted" });
 };
