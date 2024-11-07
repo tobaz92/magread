@@ -37,6 +37,7 @@ describe("GET Pages with login", () => {
 
   it("Sign-up", async () => {
     const { sessionCookie } = await signUp(userEditor);
+    const response = await logout([sessionCookie]);
   });
 
   it("Login", async () => {

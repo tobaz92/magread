@@ -1,4 +1,4 @@
-import './setup';
+import "./setup";
 import { userError, userTest } from "./vars/users";
 import {
   signUp,
