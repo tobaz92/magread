@@ -106,9 +106,9 @@ jobs:
         run: docker build -t tobaz92/magread:reader-latest --push .
 
       - name: Build Docker Image — Core
-        working-directory: ./core
+        working-directory: ./rust/core
         run: docker build -t tobaz92/magread:core-latest --push .
 
       - name: Build Docker Image — Optimizer
-        working-directory: ./optimizer
+        working-directory: ./rust/optimizer
         run: docker build -t tobaz92/magread:optimizer-latest --push .
