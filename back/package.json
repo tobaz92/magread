@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node src/server.js",
     "dev": "nodemon --exec ts-node src/server.ts",
-    "test": "npx --no-install jest ",
+    "test": "npx --no-install jest --forceExit --detectOpenHandles",
     "build": "tsc"
   },
   "keywords": [],
