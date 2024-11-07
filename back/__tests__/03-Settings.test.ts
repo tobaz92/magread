@@ -4,6 +4,7 @@ import { app } from "../src/app";
 import { pagesRoutes } from "./vars/pages";
 import { userEditor2 } from "./vars/users";
 import { login, logout, signUp, deleteUser } from "./utils/authentification";
+import e from "express";
 
 describe("Settings", () => {
   let sessionCookie: string;
@@ -17,24 +18,39 @@ describe("Settings", () => {
       userId = userIdSignUp;
     });
   });
-
-  describe("Add Domain", () => {
-    it("Add domain", async () => {
+  describe("Add domain", () => {
+    it("One domain", async () => {
       const response = await request(app)
         .post("/settings")
         .set("Cookie", sessionCookie)
         .send({ allowedDomains: ["domain.com"] });
       expect(response.status).toBe(200);
     });
-  });
 
-  describe("Add Domains", () => {
-    it("Add domains", async () => {
+    it("Multiple domains", async () => {
       const response = await request(app)
         .post("/settings")
         .set("Cookie", sessionCookie)
         .send({ allowedDomains: ["domain.com", "test.com"] });
       expect(response.status).toBe(200);
+    });
+  });
+
+  describe("Create token", () => {
+    it("Create token", async () => {
+      const response = await request(app)
+        .post("/settings/tokengenerator")
+        .set("Cookie", sessionCookie)
+        .send({
+          embedToken: {
+            domain: "domain.com",
+            fileId: "123",
+            expiresAt: "2022-12-12",
+          },
+        });
+      expect(response.status).toBe(200);
+      expect(response.body.tokens.token).toBeDefined();
+      expect(response.body.tokens.tokenBase64).toBeDefined();
     });
   });
 
