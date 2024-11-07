@@ -7,22 +7,6 @@ on:
       - ci
 
 jobs:
-
-      - name: Wait for MongoDB to be ready
-        run: |
-          for i in {1..10}; do
-            if nc -z localhost 27017; then
-              echo "MongoDB is ready!";
-              exit 0;
-            fi
-            echo "Waiting for MongoDB...";
-            sleep 5;
-          done
-          echo "MongoDB did not become ready in time.";
-          exit 1
-
-      - name: Save MongoDB configuration
-        run: echo "MONGO_URL=mongodb://root:example@localhost:27017" >> $GITHUB_ENV
   install-deps:
     runs-on: ubuntu-latest
 
@@ -61,6 +45,22 @@ jobs:
           MONGO_INITDB_ROOT_PASSWORD: example
 
     steps:
+      - name: Wait for MongoDB to be ready
+        run: |
+          for i in {1..10}; do
+            if nc -z localhost 27017; then
+              echo "MongoDB is ready!";
+              exit 0;
+            fi
+            echo "Waiting for MongoDB...";
+            sleep 5;
+          done
+          echo "MongoDB did not become ready in time.";
+          exit 1
+
+      - name: Save MongoDB configuration
+        run: echo "MONGO_URL=mongodb://root:example@localhost:27017" >> $GITHUB_ENV
+
       - name: Checkout code
         uses: actions/checkout@v4
 
@@ -79,7 +79,7 @@ jobs:
 
       - name: Run tests
         env:
-          MONGO_URL: "mongodb://root:example@localhost:27017"
+          MONGO_URL: ${{ env.MONGO_URL }}
           DATABASE_NAME: "magread"
           SESSION_SECRET: "secret"
           TOKEN_SECRET: "secret"
