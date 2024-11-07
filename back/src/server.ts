@@ -1,10 +1,10 @@
 import { app } from "./app";
-import { db } from "./db";
 
-db.on("error", (error) => {
-  console.error("An error occurred while connecting to the database: ", error);
-  throw new Error("An error occurred while connecting to the database: ");
-});
+
+// db.on("error", (error) => {
+//   console.error("An error occurred while connecting to the database: ", error);
+//   throw new Error("An error occurred while connecting to the database: ");
+// });
 
 const PORT = process.env.API_PORT || 3000;
 

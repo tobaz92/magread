@@ -113,8 +113,8 @@ export const createUser = async (
 
 export const loginUser = async (req: AuthenticatedRequest, res: Response) => {
   const showMessages = req.body.showMessages;
-
   const isLoggedIn = await haveSession(req);
+
   if (isLoggedIn) {
     res.status(200).json({ message: "Utilisateur déjà connecté" });
     return;

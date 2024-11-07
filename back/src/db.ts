@@ -1,24 +1,21 @@
-// import mongoose from "mongoose";
-import mongoose from "mongoose";
 import dotenv from "dotenv";
+import mongoose from "mongoose";
 dotenv.config();
 
-export const mongoURI =
-  `mongodb://${process.env.DATABASE_HOST}:${process.env.DATABASE_PORT}/${process.env.DATABASE_NAME}` ||
-  "mongodb://localhost:27017/magread";
-
-mongoose.connect(mongoURI).catch((err) => console.log(err));
-
-const db = mongoose.connection;
-
-db.on("error", (error) => {
-  console.error("An error occurred while connecting to the database: ", error);
-  throw new Error("An error occurred while connecting to the database: ");
-});
-db.once("open", () => {
-  if (process.env.NODE_ENV !== "test") {
-    console.log("Database connection successful");
+export const mongoURI = `${process.env.MONGO_URL}/${process.env.DATABASE_NAME}`;
+const connectDB = async () => {
+  try {
+    await mongoose.connect(mongoURI);
+    if (process.env.NODE_ENV !== "test") {
+      console.log(`Connecté à la base de données ${process.env.DATABASE_NAME}`);
+    }
+  } catch (err) {
+    console.error("Erreur de connexion à MongoDB", err);
+    process.exit(1);
   }
-});
+};
+if (mongoose.connection.readyState !== 1) {
+  connectDB();
+}
 
-export { db };
+export const db = mongoose.connection;

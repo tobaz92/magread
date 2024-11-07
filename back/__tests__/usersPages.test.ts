@@ -1,9 +1,7 @@
+import './setup';
 const request = require("supertest");
 import { app } from "../src/app";
 import { pagesRoutes } from "./vars/pages";
-import { userError, userEditor } from "./vars/users";
-
-import { signUp, login, logout, deleteUser } from "./utils/authentification";
 
 // Guest
 describe(`GET Pages`, () => {
@@ -14,7 +12,7 @@ describe(`GET Pages`, () => {
     });
   });
 });
-describe(`GET Pages `, () => {
+describe(`GET Pages`, () => {
   pagesRoutes.editor.map((page) => {
     it(`${page}`, async () => {
       const res = await request(app).get(page);
@@ -22,7 +20,7 @@ describe(`GET Pages `, () => {
     });
   });
 });
-describe(`GET Pages `, () => {
+describe(`GET Pages`, () => {
   pagesRoutes.login.map((page) => {
     it(`${page}`, async () => {
       const res = await request(app).get(page);

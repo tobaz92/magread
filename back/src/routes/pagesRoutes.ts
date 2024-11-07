@@ -7,7 +7,6 @@ import path from "path";
 
 pagesRouter.get("/:slug", isConnectedBool, async (req, res) => {
   const { slug } = req.params;
-
   const allPages = fs.readdirSync(path.join(__dirname, "../views/guest"));
   if (!allPages.includes(`${slug}.ejs`)) {
     return res

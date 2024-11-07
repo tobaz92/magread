@@ -1,3 +1,4 @@
+import './setup';
 import { userError, userEditor } from "./vars/users";
 import {
   signUp,
