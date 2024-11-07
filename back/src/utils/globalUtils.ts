@@ -102,11 +102,6 @@ export function getAssetsEmbedUrl() {
   const scriptFile = files.find((file) => file.endsWith(".js"));
   const styleFile = files.find((file) => file.endsWith(".css"));
 
-  console.log({
-    script: scriptFile,
-    style: styleFile,
-  })
-
   return {
     script: scriptFile,
     style: styleFile,
