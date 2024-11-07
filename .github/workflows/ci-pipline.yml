@@ -40,9 +40,6 @@ jobs:
         image: mongo:latest
         ports:
           - 27017:27017
-        env:
-          MONGO_INITDB_ROOT_USERNAME: root
-          MONGO_INITDB_ROOT_PASSWORD: example
 
     steps:
       - name: Wait for MongoDB to be ready
@@ -59,7 +56,7 @@ jobs:
           exit 1
 
       - name: Save MongoDB configuration
-        run: echo "MONGO_URL=mongodb://root:example@localhost:27017" >> $GITHUB_ENV
+        run: echo "MONGO_URL=mongodb://localhost:27017" >> $GITHUB_ENV
 
       - name: Checkout code
         uses: actions/checkout@v4

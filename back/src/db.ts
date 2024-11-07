@@ -32,7 +32,7 @@ import mongoose from "mongoose";
 dotenv.config();
 
 export const mongoURI = `${process.env.MONGO_URL}/${process.env.DATABASE_NAME}`;
-
+console.log('mongoURI', mongoURI);
 const connectDB = async () => {
   try {
     await mongoose.connect(mongoURI);
