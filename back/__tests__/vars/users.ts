@@ -9,6 +9,12 @@ const userEditor = {
   email: "user@user.com",
   password: "user123",
 };
+const userEditor2 = {
+  username: "user2",
+  email: "user2@user2.com",
+  password: "user123",
+};
+
 
 const userTest = {
   username: "usertest",
@@ -24,6 +30,7 @@ const userError = {
 export {
   userAdmin,
   userEditor,
+  userEditor2,
   userTest,
   userError,
 };

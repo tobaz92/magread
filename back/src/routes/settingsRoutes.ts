@@ -5,6 +5,7 @@ import {
   settingsIndex,
   updateSettings,
   connect,
+  deleteSettings,
 } from "../controllers/settingsController";
 import settingsData from "../middleware/setting/settingsMiddleware";
 import decodeTokenEmbeded from "../middleware/setting/decodeTokenEmbeded";
@@ -33,5 +34,9 @@ settingsRouter.post(
   isPublic,
   connect
 );
+
+// if (process.env.NODE_ENV === "test") {
+  settingsRouter.delete("/:id", deleteSettings);
+// }
 
 export default settingsRouter;
